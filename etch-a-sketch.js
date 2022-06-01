@@ -6,7 +6,7 @@ const buttonReset = document.createElement("button");
 const buttonRGB = document.createElement("button");
 
 grid.id = "grid";
-grid.style.cssText ="display:flex;flex-direction:column;align-items:center; width:fit-content;border: solid 0.1px grey";
+grid.style.cssText ="display:flex;flex-direction:column;align-items:center; width:fit-content;border: solid 0.1px grey;width: 960px;height:960px";
 body.style.cssText = 'display:flex;flex-direction:column;justify-content:center;align-items:center;color:white;font-family: Roboto, sans-serif;';
 
 function insertDivs(inputGridSize) {
@@ -15,14 +15,15 @@ function insertDivs(inputGridSize) {
         console.log("Creating..");
         let rowDiv = document.createElement("div");
         rowDiv.style.cssText = "display:flex; justify-content:center; align-items:center;";
-        rowDiv.style.cssText = "display:flex; justify-content:center; align-items:center;";
+        //rowDiv.style.cssText += "border: solid 0.1px red";
         rowDiv.id = "tinyDiv";
 
         for (let colCount = 0; colCount < inputGridSize; colCount++)
         {
             let colDiv = document.createElement("div");
-            //colDiv.style.cssText = "border: solid 0.5px grey";
-            colDiv.style.cssText += "width:10px;height:10px";
+            //colDiv.style.cssText += "border: solid 0.01px red";
+            colDiv.style.cssText += `width:${960/inputGridSize}px;height:${960/inputGridSize}px`;
+
             colDiv.id = "tinyDiv";
             rowDiv.appendChild(colDiv);
         }
