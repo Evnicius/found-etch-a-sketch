@@ -3,7 +3,7 @@ const grid = document.createElement("div");
 const buttonPromptGrid = document.createElement("button");
 
 grid.id = "grid";
-grid.style.cssText ="display:flex;flex-direction:column;align-items:center; width:fit-content";
+grid.style.cssText ="display:flex;flex-direction:column;align-items:center; width:fit-content;border: solid 0.1px grey";
 body.style.cssText = 'display:flex;flex-direction:column;justify-content:center;align-items:center;color:white;font-family: Roboto, sans-serif;';
 
 function insertDivs(inputGridSize) {
@@ -18,7 +18,7 @@ function insertDivs(inputGridSize) {
         for (let colCount = 0; colCount < inputGridSize; colCount++)
         {
             let colDiv = document.createElement("div");
-            colDiv.style.cssText = "border: solid 0.5px grey";
+            //colDiv.style.cssText = "border: solid 0.5px grey";
             colDiv.style.cssText += "width:10px;height:10px";
             colDiv.id = "tinyDiv";
             rowDiv.appendChild(colDiv);
@@ -28,59 +28,80 @@ function insertDivs(inputGridSize) {
     }
 }
 
-const testDiv = document.createElement("div");
+const Header = document.createElement("div");
 
-testDiv.textContent = "Etch A Sketch";
-testDiv.className = "tinyDiv";
-body.appendChild(testDiv);
+Header.textContent = "Etch A Sketch";
+Header.style.cssText = "font-size: 50px; margin-top: 20px";
+body.appendChild(Header);
 
 function randomInteger()
 {
     return Math.floor(Math.random()*255);
 }
 
-grid.addEventListener("mouseover", (event) => {
-    let colorRed = randomInteger();
-    let colorGreen = randomInteger();
-    let colorBlue = randomInteger();
-    
-    let randomColor = "rgb(" + colorRed + "," + colorGreen + "," + colorBlue + ")";
-    event.target.style.transition ="0.01s";
-    event.target.style.backgroundColor = randomColor;
-    event.stopImmediatePropagation();
-});
-
-grid.addEventListener("mouseout", (event) => {
-    event.target.style.transition ="5s";
-    event.target.style.backgroundColor = "";
-    
-});
-
 body.appendChild(buttonPromptGrid);
 insertDivs(10);
 
+buttonPromptGrid.textContent = "Set Size";
+buttonPromptGrid.style.cssText = "background-color: #121212; color: white; border: 1px solid #f44336; border-radius: 12px; padding: 5px 20px; margin: 20px; font-size: 20px";
+document.body.style.backgroundColor = "#121212";
+
+function paintDiv () {
+    let listenDivOuter  = document.querySelectorAll("#tinyDiv");
+    listenDivOuter.forEach((div) => {
+        div.addEventListener('mouseover', (div) => {
+            let colorRed = randomInteger();
+            let colorGreen = randomInteger();
+            let colorBlue = randomInteger();
+            let randomColor = "rgb(" + colorRed + "," + colorGreen + "," + colorBlue + ")";
+            
+            div.stopPropagation();
+            div.target.style.transition ="0.01s";
+            div.target.style.backgroundColor = randomColor;
+        });
+    
+        div.addEventListener("mouseout", (div) => {
+            div.stopPropagation();
+            div.target.style.transition ="10s";
+            div.target.style.backgroundColor = "";
+            
+        });
+    });
+}
+
+paintDiv();
+
 function removeGrid()
 {
-    const listenDiv  = document.querySelectorAll("#tinyDiv");
+    const listenDiv = document.querySelectorAll("#tinyDiv");
     for (let i = 0; i < listenDiv.length; i++)
     {
         listenDiv[i].parentNode.removeChild(listenDiv[i]);
     }
+    listenDivOuter  = document.querySelectorAll("#tinyDiv");
 }
+
 
 buttonPromptGrid.addEventListener("click", (event) => {
     let inputGridSize = prompt("Enter a value for grid size up to 100 px.\
     \nThe grid is a square.");
-    removeGrid();
-    insertDivs(inputGridSize);
+    if (inputGridSize > 0 && inputGridSize <= 100)
+    {
+        removeGrid();
+        insertDivs(inputGridSize);
+        paintDiv();
+    }
+    else
+    {
+        alert("Invalid value!");
+    }
     
+
 });
 
-buttonPromptGrid.textContent = "Set Size";
-buttonPromptGrid.style.cssText = "background-color: #121212; color: white; border: 1px solid #f44336; border-radius: 12px; padding: 5px 20px; margin: 20px; font-size: 7px";
 
 
 
 
-document.body.style.backgroundColor = "#121212";
+
 
